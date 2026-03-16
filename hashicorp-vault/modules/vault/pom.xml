@@ -22,7 +22,7 @@
     <parent>
         <groupId>io.helidon.extensions.hashicorp.vault</groupId>
         <artifactId>helidon-extensions-hashicorp-vault-modules-project</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>27.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>helidon-extensions-hashicorp-vault</artifactId>
@@ -62,6 +62,11 @@
         <dependency>
             <groupId>io.helidon.common.features</groupId>
             <artifactId>helidon-common-features-api</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>io.helidon.config</groupId>
+            <artifactId>helidon-config-metadata</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

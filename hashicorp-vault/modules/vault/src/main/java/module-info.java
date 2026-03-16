@@ -26,6 +26,7 @@ import io.helidon.common.features.api.HelidonFlavor;
 @Features.Path("HCP Vault")
 module io.helidon.extensions.hashicorp.vault {
     requires static io.helidon.common.features.api;
+    requires static io.helidon.config.metadata;
 
     requires transitive io.helidon.config;
     requires transitive io.helidon.webclient;
@@ -44,8 +45,4 @@ module io.helidon.extensions.hashicorp.vault {
     uses io.helidon.extensions.hashicorp.vault.spi.AuthMethodProvider;
     uses io.helidon.extensions.hashicorp.vault.spi.VaultAuth;
     uses io.helidon.extensions.hashicorp.vault.spi.SysProvider;
-
-    // required for CDI
-    opens io.helidon.extensions.hashicorp.vault to weld.core.impl, io.helidon.microprofile.cdi;
-
 }

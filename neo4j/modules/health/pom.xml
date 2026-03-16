@@ -24,11 +24,11 @@
     <parent>
         <groupId>io.helidon.extensions.neo4j</groupId>
         <artifactId>helidon-extensions-neo4j-modules-project</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>27.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>helidon-extensions-neo4j-health</artifactId>
-    <name>Helidon Neo4j Health Extension</name>
+    <name>Helidon Extensions Neo4j Health</name>
 
     <dependencies>
         <dependency>

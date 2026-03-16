@@ -23,20 +23,20 @@
     <parent>
         <groupId>io.helidon.applications</groupId>
         <artifactId>helidon-se</artifactId>
-        <version>4.3.4</version>
+        <version>27.0.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
     <groupId>io.helidon.examples.integrations.vault</groupId>
     <artifactId>helidon-examples-integrations-vault-hcp</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>27.0.0-SNAPSHOT</version>
     <name>Helidon Extensions Hashicorp Vault Example SE Imperative</name>
     <description>Helidon integration with Vault.</description>
 
     <properties>
         <mainClass>io.helidon.extensions.hashicorp.vault.examples.se.VaultMain</mainClass>
 
-        <vault.version>4.0.0-SNAPSHOT</vault.version>
+        <vault.version>27.0.0-SNAPSHOT</vault.version>
     </properties>
 
     <dependencies>

@@ -24,16 +24,19 @@
     <parent>
         <groupId>io.helidon.applications</groupId>
         <artifactId>helidon-se</artifactId>
-        <version>4.3.4</version>
+        <version>27.0.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
+
+    <groupId>io.helidon.extensions.neo4j.examples</groupId>
     <artifactId>helidon-extensions-neo4j-examples-se-declarative</artifactId>
-    <version>4.0.0-SNAPSHOT</version>
+    <version>27.0.0-SNAPSHOT</version>
     <name>Helidon Extension Neo4j Examples SE Declarative</name>
 
     <properties>
         <mainClass>io.helidon.extensions.neo4j.examples.declarative.Main</mainClass>
-        <helidon.extension.neo4j.version>4.0.0-SNAPSHOT</helidon.extension.neo4j.version>
+        <helidon.extension.neo4j.version>27.0.0-SNAPSHOT</helidon.extension.neo4j.version>
+        <neo4j-harness.version>5.26.22</neo4j-harness.version>
         <version.lib.neo4j>6.0.2</version.lib.neo4j>
     </properties>
 
@@ -102,9 +105,11 @@
             <artifactId>hamcrest-all</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--Neo4j harness -->
         <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <groupId>org.neo4j.test</groupId>
+            <artifactId>neo4j-harness</artifactId>
+            <version>${neo4j-harness.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
