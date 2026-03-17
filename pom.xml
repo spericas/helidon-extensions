@@ -42,6 +42,7 @@
         <module>neo4j</module>
         <module>oci-v3</module>
         <module>langchain4j</module>
+        <module>eureka</module>
     </modules>
 
     <organization>
@@ -78,6 +79,7 @@
 
         <dependency-check.skip>false</dependency-check.skip>
         <checkstyle.skip>false</checkstyle.skip>
+        <javadoc.fail-on-warnings>false</javadoc.fail-on-warnings>
 
         <version.lib.checkstyle>10.12.5</version.lib.checkstyle>
         <version.lib.asm>9.5</version.lib.asm>
@@ -93,6 +95,7 @@
         <version.plugin.directory>1.0</version.plugin.directory>
         <version.plugin.enforcer>3.3.0</version.plugin.enforcer>
         <version.plugin.exec>3.1.0</version.plugin.exec>
+        <version.plugin.failsafe>3.5.5</version.plugin.failsafe>
         <version.plugin.jar>3.3.0</version.plugin.jar>
         <version.plugin.javadoc>3.6.2</version.plugin.javadoc>
         <version.plugin.license>1.16</version.plugin.license>
@@ -166,6 +169,14 @@
                     <groupId>io.helidon.build-tools</groupId>
                     <artifactId>helidon-javadoc-maven-plugin</artifactId>
                     <version>${version.plugin.helidon-build-tools}</version>
+                    <configuration>
+                        <source>${version.java}</source>
+                        <failOnError>true</failOnError>
+                        <failOnWarnings>${javadoc.fail-on-warnings}</failOnWarnings>
+                        <!-- we are not interested in each file that is generated -->
+                        <quiet>true</quiet>
+                        <offline>true</offline>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -210,6 +221,11 @@
                             <version>${version.lib.asm}</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${version.plugin.failsafe}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -564,6 +580,25 @@
                             <execution>
                                 <goals>
                                     <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>javadoc</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
                                 </goals>
                             </execution>
                         </executions>

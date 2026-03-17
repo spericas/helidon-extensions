@@ -36,22 +36,4 @@
         <module>health</module>
     </modules>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>io.helidon.build-tools</groupId>
-                <artifactId>helidon-services-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-meta-inf-services</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>services</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
