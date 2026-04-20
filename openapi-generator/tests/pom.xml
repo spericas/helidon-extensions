@@ -22,15 +22,15 @@
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>io.helidon.extensions.openapi-se-generator</groupId>
-        <artifactId>helidon-extensions-openapi-se-generator-project</artifactId>
+        <groupId>io.helidon.extensions.openapi-generator</groupId>
+        <artifactId>helidon-extensions-openapi-generator-project</artifactId>
         <version>27.0.0-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
 
-    <groupId>io.helidon.extensions.openapi-se-generator.tests</groupId>
-    <artifactId>helidon-extensions-openapi-se-generator-tests-project</artifactId>
-    <name>Helidon Extensions Openapi-Se-Generator Tests Project</name>
+    <groupId>io.helidon.extensions.openapi-generator.tests</groupId>
+    <artifactId>helidon-extensions-openapi-generator-tests-project</artifactId>
+    <name>Helidon Extensions Openapi-Generator Tests Project</name>
 
     <properties>
         <spotbugs.skip>true</spotbugs.skip>

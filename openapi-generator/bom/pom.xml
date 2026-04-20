@@ -21,23 +21,31 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>io.helidon.extensions.openapi-se-generator</groupId>
-        <artifactId>helidon-extensions-openapi-se-generator-project</artifactId>
-        <version>27.0.0-SNAPSHOT</version>
-    </parent>
-    <packaging>pom</packaging>
 
-    <groupId>io.helidon.extensions.openapi-se-generator.examples</groupId>
-    <artifactId>helidon-extensions-openapi-se-generator-examples-project</artifactId>
-    <name>Helidon Extensions Openapi-Se-Generator Examples</name>
+    <parent>
+        <groupId>io.helidon.extensions</groupId>
+        <artifactId>helidon-extensions-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>io.helidon.extensions.openapi-generator</groupId>
+    <artifactId>helidon-extensions-openapi-generator-bom</artifactId>
+    <version>27.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Helidon Extensions Openapi-Generator BOM POM</name>
 
     <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
-        <maven.sources.skip>true</maven.sources.skip>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <openapi-generator.extension.version>27.0.0-SNAPSHOT</openapi-generator.extension.version>
     </properties>
 
-    <modules>
-    </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.helidon.extensions.openapi-generator</groupId>
+                <artifactId>helidon-extensions-openapi-generator</artifactId>
+                <version>${openapi-generator.extension.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

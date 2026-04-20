@@ -35,13 +35,11 @@ import io.helidon.webserver.WebServer;
  *   mvn package
  *   java -jar target/{{artifactId}}-{{artifactVersion}}.jar
  * }</pre>
- * </p>
  */
 @Service.GenerateBinding
 public final class Main {
 
     static {
-        // Initialises logging configuration used during GraalVM native-image build.
         LogConfig.initClass();
     }
 

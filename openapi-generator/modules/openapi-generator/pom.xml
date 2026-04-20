@@ -22,15 +22,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.helidon.extensions.openapi-se-generator</groupId>
-        <artifactId>helidon-extensions-openapi-se-generator-modules-project</artifactId>
+        <groupId>io.helidon.extensions.openapi-generator</groupId>
+        <artifactId>helidon-extensions-openapi-generator-modules-project</artifactId>
         <version>27.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>helidon-extensions-openapi-se-generator</artifactId>
+    <artifactId>helidon-extensions-openapi-generator</artifactId>
     <packaging>jar</packaging>
 
-    <name>Helidon Extensions OpenAPI SE Generator</name>
+    <name>Helidon Extensions OpenAPI Generator</name>
     <description>
         An OpenAPI Generator SPI plugin that generates Helidon SE 4.4.x or later server code from an OpenAPI 3
         specification.
