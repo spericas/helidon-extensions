@@ -49,7 +49,7 @@ class FeaturesGenerationIT {
         String specPath = Paths.get(resource.toURI()).toAbsolutePath().toString();
 
         CodegenConfigurator configurator = new CodegenConfigurator()
-                .setGeneratorName("helidon-se-declarative")
+                .setGeneratorName("helidon-declarative")
                 .setInputSpec(specPath)
                 .setOutputDir(outputDir.toString())
                 .addAdditionalProperty("helidonVersion", "4.4.1")
@@ -182,6 +182,12 @@ class FeaturesGenerationIT {
     }
 
     @Test
+    void endpointOptionalListParamUsesOptionalListTypeByDefault() throws IOException {
+        assertThat(read(apiFile("ThingsEndpoint.java")),
+                   containsString("@Http.QueryParam(\"tags\") Optional<List<String>> tags"));
+    }
+
+    @Test
     void endpointParamValidationImportsValidation() throws IOException {
         assertThat(read(apiFile("ThingsEndpoint.java")),
                    containsString("import io.helidon.validation.Validation;"));
@@ -198,6 +204,12 @@ class FeaturesGenerationIT {
         String content = read(apiFile("ThingsApi.java"));
         assertThat(content, containsString("@Validation.Integer.Min(11)"));
         assertThat(content, containsString("@Validation.Integer.Max(19)"));
+    }
+
+    @Test
+    void apiInterfaceOptionalListParamUsesOptionalListTypeByDefault() throws IOException {
+        assertThat(read(apiFile("ThingsApi.java")),
+                   containsString("@Http.QueryParam(\"tags\") Optional<List<String>> tags"));
     }
 
     @Test

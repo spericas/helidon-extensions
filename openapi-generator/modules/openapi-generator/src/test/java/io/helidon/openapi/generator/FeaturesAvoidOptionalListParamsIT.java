@@ -30,22 +30,22 @@ import org.openapitools.codegen.DefaultGenerator;
 import org.openapitools.codegen.config.CodegenConfigurator;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Integration test — verifies that {@code corsEnabled=true} adds {@code @Cors.Defaults} to
- * generated endpoint classes and includes {@code helidon-webserver-cors} in pom.xml.
+ * Integration test for {@code avoidOptionalListParams=true} on optional query list parameters.
  */
-class CorsGenerationIT {
+class FeaturesAvoidOptionalListParamsIT {
 
     @TempDir
     static Path outputDir;
 
     @BeforeAll
     static void generate() throws Exception {
-        URL resource = CorsGenerationIT.class
+        URL resource = FeaturesAvoidOptionalListParamsIT.class
                 .getClassLoader()
-                .getResource("petstore.yaml");
+                .getResource("features.yaml");
         String specPath = Paths.get(resource.toURI()).toAbsolutePath().toString();
 
         CodegenConfigurator configurator = new CodegenConfigurator()
@@ -56,45 +56,36 @@ class CorsGenerationIT {
                 .addAdditionalProperty("apiPackage", "io.helidon.example.api")
                 .addAdditionalProperty("modelPackage", "io.helidon.example.model")
                 .addAdditionalProperty("invokerPackage", "io.helidon.example")
-                .addAdditionalProperty("corsEnabled", "true");
+                .addAdditionalProperty("avoidOptionalListParams", "true");
 
         new DefaultGenerator().opts(configurator.toClientOptInput()).generate();
     }
 
     @Test
-    void endpointHasCorsDefaultsAnnotation() throws IOException {
-        assertThat(read(apiFile("PetsEndpoint.java")),
-                   containsString("@Cors.Defaults"));
+    void endpointOptionalListParamUsesBareListType() throws IOException {
+        String content = read(apiFile("ThingsEndpoint.java"));
+        assertThat(content, containsString("@Http.QueryParam(\"tags\") List<String> tags"));
+        assertThat(content, not(containsString("@Http.QueryParam(\"tags\") Optional<List<String>> tags")));
     }
 
     @Test
-    void endpointImportsCors() throws IOException {
-        assertThat(read(apiFile("PetsEndpoint.java")),
-                   containsString("import io.helidon.webserver.cors.Cors;"));
+    void apiInterfaceOptionalListParamUsesBareListType() throws IOException {
+        String content = read(apiFile("ThingsApi.java"));
+        assertThat(content, containsString("@Http.QueryParam(\"tags\") List<String> tags"));
+        assertThat(content, not(containsString("@Http.QueryParam(\"tags\") Optional<List<String>> tags")));
     }
 
     @Test
-    void pomHasCorsDependency() throws IOException {
-        assertThat(read(outputDir.resolve("pom.xml").toFile()),
-                   containsString("helidon-webserver-cors"));
+    void scalarOptionalParamsRemainOptional() throws IOException {
+        String content = read(apiFile("ThingsEndpoint.java"));
+        assertThat(content, containsString("@Http.QueryParam(\"limit\") Optional<Integer> limit"));
     }
 
-    @Test
-    void buildGradleHasCorsDependency() throws IOException {
-        assertThat(read(outputDir.resolve("build.gradle").toFile()),
-                   containsString("io.helidon.webserver:helidon-webserver-cors"));
+    private static File apiFile(String filename) {
+        return outputDir.resolve("src/main/java/io/helidon/example/api/" + filename).toFile();
     }
 
-    @Test
-    void generatedProjectBuildsWithMaven() throws Exception {
-        GeneratedProjectBuildSupport.assertMavenPackageSucceeds(outputDir);
-    }
-
-    private File apiFile(String name) {
-        return outputDir.resolve("src/main/java/io/helidon/example/api/" + name).toFile();
-    }
-
-    private String read(File file) throws IOException {
+    private static String read(File file) throws IOException {
         return Files.readString(file.toPath());
     }
 }

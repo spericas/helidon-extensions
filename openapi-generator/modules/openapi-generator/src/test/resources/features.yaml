@@ -55,6 +55,13 @@ paths:
             exclusiveMinimum: true
             maximum: 20
             exclusiveMaximum: true
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         "200":
           description: OK

@@ -53,7 +53,7 @@ import static org.openapitools.codegen.utils.StringUtils.camelize;
  * openapi-generator SPI implementation that generates Helidon SE 4.x declarative code.
  *
  * <p>Register via SPI: {@code META-INF/services/org.openapitools.codegen.CodegenConfig}
- * pointing to this class. Use with {@code -g helidon-se-declarative}.</p>
+ * pointing to this class. Use with {@code -g helidon-declarative}.</p>
  *
  * <p>Generates per tag group:
  * <ul>
@@ -68,7 +68,7 @@ import static org.openapitools.codegen.utils.StringUtils.camelize;
  * application.yaml, logging.properties
  * </p>
  */
-public class HelidonSeDeclarativeCodegen extends AbstractJavaCodegen {
+public class HelidonDeclarativeCodegen extends AbstractJavaCodegen {
 
     static final String OPT_HELIDON_VERSION = "helidonVersion";
     static final String OPT_GENERATE_CLIENT = "generateClient";
@@ -81,6 +81,7 @@ public class HelidonSeDeclarativeCodegen extends AbstractJavaCodegen {
     static final String OPT_FT_ENABLED = "ftEnabled";
     static final String OPT_TRACING_ENABLED = "tracingEnabled";
     static final String OPT_METRICS_ENABLED = "metricsEnabled";
+    static final String OPT_AVOID_OPTIONAL_LIST_PARAMS = "avoidOptionalListParams";
 
     private String helidonVersion = "4.4.1";
     private boolean generateClient = true;
@@ -91,18 +92,19 @@ public class HelidonSeDeclarativeCodegen extends AbstractJavaCodegen {
     private boolean ftEnabled = false;
     private boolean tracingEnabled = false;
     private boolean metricsEnabled = false;
+    private boolean avoidOptionalListParams = false;
     private List<SecurityRequirement> globalSecurityRequirements = List.of();
 
     /**
      * Creates a new generator with default options and template mappings.
      */
-    public HelidonSeDeclarativeCodegen() {
+    public HelidonDeclarativeCodegen() {
         super();
 
-        outputFolder = "generated-code/helidon-se-declarative";
+        outputFolder = "generated-code/helidon-declarative";
         // Setting the fields directly configures where templates are resolved from
-        templateDir = "helidon-se-declarative";
-        embeddedTemplateDir = "helidon-se-declarative";
+        templateDir = "helidon-declarative";
+        embeddedTemplateDir = "helidon-declarative";
 
         apiPackage = "io.helidon.example.api";
         modelPackage = "io.helidon.example.model";
@@ -166,6 +168,9 @@ public class HelidonSeDeclarativeCodegen extends AbstractJavaCodegen {
         addOption(OPT_METRICS_ENABLED,
                 "Add @Metrics.Timed to every endpoint method (records invocation timing)",
                 String.valueOf(metricsEnabled));
+        addOption(OPT_AVOID_OPTIONAL_LIST_PARAMS,
+                "Use bare List<T> instead of Optional<List<T>> for optional query list parameters",
+                String.valueOf(avoidOptionalListParams));
     }
 
     // -------------------------------------------------------------------------
@@ -174,7 +179,7 @@ public class HelidonSeDeclarativeCodegen extends AbstractJavaCodegen {
 
     @Override
     public String getName() {
-        return "helidon-se-declarative";
+        return "helidon-declarative";
     }
 
     @Override
@@ -234,6 +239,10 @@ public class HelidonSeDeclarativeCodegen extends AbstractJavaCodegen {
             metricsEnabled = Boolean.parseBoolean(
                     additionalProperties.get(OPT_METRICS_ENABLED).toString());
         }
+        if (additionalProperties.containsKey(OPT_AVOID_OPTIONAL_LIST_PARAMS)) {
+            avoidOptionalListParams = Boolean.parseBoolean(
+                    additionalProperties.get(OPT_AVOID_OPTIONAL_LIST_PARAMS).toString());
+        }
 
         // Expose options to all templates via additionalProperties
         additionalProperties.put("helidonVersion", helidonVersion);
@@ -245,6 +254,7 @@ public class HelidonSeDeclarativeCodegen extends AbstractJavaCodegen {
         additionalProperties.put("ftEnabled", ftEnabled);
         additionalProperties.put("tracingEnabled", tracingEnabled);
         additionalProperties.put("metricsEnabled", metricsEnabled);
+        additionalProperties.put("avoidOptionalListParams", avoidOptionalListParams);
 
         // Conditionally add per-tag template files
         if (generateClient) {
@@ -433,12 +443,16 @@ public class HelidonSeDeclarativeCodegen extends AbstractJavaCodegen {
             op.formParams.clear();
         }
 
-        // Mark optional query parameters so the template can wrap them in Optional<>
+        // Mark optional query parameters so the template can wrap them in Optional<>.
+        // When configured, optional query list params remain plain List<T>.
         for (CodegenParameter param : op.allParams) {
             if (param.isQueryParam && !param.required) {
-                param.vendorExtensions.put("x-optional", Boolean.TRUE);
-                param.vendorExtensions.put("x-bare-type", param.dataType);
-                param.dataType = "Optional<" + param.dataType + ">";
+                boolean avoidOptionalListParam = avoidOptionalListParams && param.isArray;
+                if (!avoidOptionalListParam) {
+                    param.vendorExtensions.put("x-optional", Boolean.TRUE);
+                    param.vendorExtensions.put("x-bare-type", param.dataType);
+                    param.dataType = "Optional<" + param.dataType + ">";
+                }
             }
         }
 

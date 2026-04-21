@@ -45,7 +45,7 @@ class MediaTypesGenerationIT {
         String specPath = Paths.get(resource.toURI()).toAbsolutePath().toString();
 
         CodegenConfigurator configurator = new CodegenConfigurator()
-                .setGeneratorName("helidon-se-declarative")
+                .setGeneratorName("helidon-declarative")
                 .setInputSpec(specPath)
                 .setOutputDir(outputDir.toString())
                 .addAdditionalProperty("helidonVersion", "4.4.1")

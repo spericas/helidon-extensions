@@ -24,16 +24,16 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Unit tests for {@link HelidonSeDeclarativeCodegen} — verifies naming conventions,
+ * Unit tests for {@link HelidonDeclarativeCodegen} — verifies naming conventions,
  * metadata, and template registration without running the full generation pipeline.
  */
-class HelidonSeDeclarativeCodegenTest {
+class HelidonDeclarativeCodegenTest {
 
-    private HelidonSeDeclarativeCodegen codegen;
+    private HelidonDeclarativeCodegen codegen;
 
     @BeforeEach
     void setUp() {
-        codegen = new HelidonSeDeclarativeCodegen();
+        codegen = new HelidonDeclarativeCodegen();
     }
 
     // -------------------------------------------------------------------------
@@ -42,7 +42,7 @@ class HelidonSeDeclarativeCodegenTest {
 
     @Test
     void getNameReturnsCorrectId() {
-        assertThat(codegen.getName(), is("helidon-se-declarative"));
+        assertThat(codegen.getName(), is("helidon-declarative"));
     }
 
     @Test

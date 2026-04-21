@@ -27,8 +27,8 @@ import org.openapitools.codegen.config.CodegenConfigurator;
  *
  * <p>Usage:
  * <pre>
- *   java -jar target/helidon-se-declarative-generator-1.0-SNAPSHOT.jar generate \
- *     -g helidon-se-declarative \
+ *   java -jar target/helidon-declarative-generator-1.0-SNAPSHOT.jar generate \
+ *     -g helidon-declarative \
  *     -i /path/to/spec.yaml \
  *     -o /path/to/output \
  *     [--additional-properties key=value,...]
@@ -36,9 +36,9 @@ import org.openapitools.codegen.config.CodegenConfigurator;
  * Runtime dependencies are copied to {@code target/libs} during packaging.
  * </p>
  */
-public class SeGeneratorCli {
+public class GeneratorCli {
 
-    private SeGeneratorCli() {
+    private GeneratorCli() {
     }
 
     /**
