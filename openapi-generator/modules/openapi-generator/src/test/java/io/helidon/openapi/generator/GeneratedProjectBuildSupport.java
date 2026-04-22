@@ -30,7 +30,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 final class GeneratedProjectBuildSupport {
 
-    private static final long BUILD_TIMEOUT_SECONDS = 5000;
+    private static final long BUILD_TIMEOUT_SECONDS = 600;
     private static final String BUILD_TESTS_PROPERTY = "helidon.codegen.it.buildsWithMaven";
     private static final String GRADLE_BUILD_TESTS_PROPERTY = "helidon.codegen.it.buildsWithGradle";
 
@@ -51,19 +51,17 @@ final class GeneratedProjectBuildSupport {
                 mavenExecutable, "-B", "-q", "-s", settingsFile.toString(), "-DskipTests", "package");
         processBuilder.directory(projectDir.toFile());
         processBuilder.redirectErrorStream(true);
+        Path outputFile = Files.createTempFile("generated-project-maven-", ".log");
+        processBuilder.redirectOutput(outputFile.toFile());
         try {
             Process process = processBuilder.start();
-            byte[] outputBytes;
-            try (var input = process.getInputStream()) {
-                outputBytes = input.readAllBytes();
-            }
 
             boolean finished = process.waitFor(BUILD_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             if (!finished) {
                 process.destroyForcibly();
             }
 
-            String output = new String(outputBytes, StandardCharsets.UTF_8);
+            String output = Files.readString(outputFile, StandardCharsets.UTF_8);
             assertThat(
                     String.format("Generated project Maven build timed out after %s seconds.%nOutput:%n%s",
                             BUILD_TIMEOUT_SECONDS, output),
@@ -78,6 +76,7 @@ final class GeneratedProjectBuildSupport {
                     process.exitValue(),
                     is(0));
         } finally {
+            Files.deleteIfExists(outputFile);
             Files.deleteIfExists(settingsFile);
         }
     }
@@ -111,19 +110,17 @@ final class GeneratedProjectBuildSupport {
         ProcessBuilder processBuilder = new ProcessBuilder(command);
         processBuilder.directory(projectDir.toFile());
         processBuilder.redirectErrorStream(true);
+        Path outputFile = Files.createTempFile("generated-project-gradle-", ".log");
+        processBuilder.redirectOutput(outputFile.toFile());
         try {
             Process process = processBuilder.start();
-            byte[] outputBytes;
-            try (var input = process.getInputStream()) {
-                outputBytes = input.readAllBytes();
-            }
 
             boolean finished = process.waitFor(BUILD_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             if (!finished) {
                 process.destroyForcibly();
             }
 
-            String output = new String(outputBytes, StandardCharsets.UTF_8);
+            String output = Files.readString(outputFile, StandardCharsets.UTF_8);
             assertThat(
                     String.format("Generated project %s timed out after %s seconds.%nOutput:%n%s",
                             actionLabel,
@@ -141,6 +138,8 @@ final class GeneratedProjectBuildSupport {
                     is(0));
         } catch (IOException e) {
             throw new TestAbortedException("Skipping " + actionLabel + " check: Gradle executable not available.", e);
+        } finally {
+            Files.deleteIfExists(outputFile);
         }
     }
 

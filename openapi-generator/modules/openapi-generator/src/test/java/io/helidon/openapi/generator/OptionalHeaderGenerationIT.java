@@ -78,6 +78,6 @@ class OptionalHeaderGenerationIT {
     }
 
     private String read(Path path) throws IOException {
-        return Files.readString(path);
+        return Files.readString(path).replace("\r\n", "\n");
     }
 }

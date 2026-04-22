@@ -163,10 +163,10 @@ class SecurityGenerationIT {
     }
 
     private String read(Path path) throws IOException {
-        return Files.readString(path);
+        return Files.readString(path).replace("\r\n", "\n");
     }
 
     private String read(java.io.File file) throws IOException {
-        return Files.readString(file.toPath());
+        return Files.readString(file.toPath()).replace("\r\n", "\n");
     }
 }

@@ -55,7 +55,7 @@ import static org.openapitools.codegen.utils.StringUtils.camelize;
  * <p>Register via SPI: {@code META-INF/services/org.openapitools.codegen.CodegenConfig}
  * pointing to this class. Use with {@code -g helidon-declarative}.</p>
  *
- * <p>Generates per tag group:
+ * <p>Generates per tag group:</p>
  * <ul>
  *   <li>{Tag}Api.java — {@code @Http.Path} interface (shared contract)</li>
  *   <li>{Tag}Endpoint.java — {@code @RestServer.Endpoint @Service.Singleton} implementation</li>
@@ -65,8 +65,7 @@ import static org.openapitools.codegen.utils.StringUtils.camelize;
  * </ul>
  * Plus per model: {Model}.java (Helidon build-time JSON binding POJO)
  * Plus supporting files: pom.xml, build.gradle, settings.gradle, Main.java,
- * application.yaml, logging.properties
- * </p>
+ * application.yaml, logging.properties.
  */
 public class HelidonDeclarativeCodegen extends AbstractJavaCodegen {
 

@@ -25,7 +25,7 @@ import org.openapitools.codegen.config.CodegenConfigurator;
 /**
  * Minimal CLI entry point for the Helidon SE declarative generator.
  *
- * <p>Usage:
+ * <p>Usage:</p>
  * <pre>
  *   java -jar target/helidon-declarative-generator-1.0-SNAPSHOT.jar generate \
  *     -g helidon-declarative \
@@ -33,8 +33,7 @@ import org.openapitools.codegen.config.CodegenConfigurator;
  *     -o /path/to/output \
  *     [--additional-properties key=value,...]
  * </pre>
- * Runtime dependencies are copied to {@code target/libs} during packaging.
- * </p>
+ * <p>Runtime dependencies are copied to {@code target/libs} during packaging.</p>
  */
 public class GeneratorCli {
 

@@ -95,6 +95,6 @@ class FtGenerationIT {
     }
 
     private String read(File file) throws IOException {
-        return Files.readString(file.toPath());
+        return Files.readString(file.toPath()).replace("\r\n", "\n");
     }
 }
