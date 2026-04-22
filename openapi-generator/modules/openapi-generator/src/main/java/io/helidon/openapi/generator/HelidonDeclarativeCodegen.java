@@ -443,11 +443,11 @@ public class HelidonDeclarativeCodegen extends AbstractJavaCodegen {
             op.formParams.clear();
         }
 
-        // Mark optional query parameters so the template can wrap them in Optional<>.
+        // Mark optional query and header parameters so the templates can wrap them in Optional<>.
         // When configured, optional query list params remain plain List<T>.
         for (CodegenParameter param : op.allParams) {
-            if (param.isQueryParam && !param.required) {
-                boolean avoidOptionalListParam = avoidOptionalListParams && param.isArray;
+            if ((param.isQueryParam || param.isHeaderParam) && !param.required) {
+                boolean avoidOptionalListParam = param.isQueryParam && avoidOptionalListParams && param.isArray;
                 if (!avoidOptionalListParam) {
                     param.vendorExtensions.put("x-optional", Boolean.TRUE);
                     param.vendorExtensions.put("x-bare-type", param.dataType);
